@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Ecdmin.Core</name>
+    </assembly>
+    <members>
+        <member name="P:Ecdmin.Core.Entities.Admin.AdminUser.Username">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="P:Ecdmin.Core.Entities.Admin.AdminUser.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:Ecdmin.Core.Entities.Admin.Role.UpdatedTime">
+            <summary>更新时间</summary>
+        </member>
+    </members>
+</doc>

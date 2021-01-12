@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Ecdmin.Application</name>
+    </assembly>
+    <members>
+        <member name="M:Ecdmin.Application.Utils.DESUtil.DESEncrypt(System.String,System.String)">
+            <summary> 
+            DES加密字符串 
+            </summary> 
+            <param name="encryptString">待加密的字符串</param> 
+            <param name="encryptKey">加密密钥,要求为16位</param> 
+            <returns>加密成功返回加密后的字符串，失败返回源串</returns> 
+        </member>
+        <member name="M:Ecdmin.Application.Utils.DESUtil.DESDecrypt(System.String,System.String)">
+            <summary> 
+            DES解密字符串 
+            </summary> 
+            <param name="decryptString">待解密的字符串</param> 
+            <param name="decryptKey">解密密钥,要求为16位,和加密密钥相同</param> 
+            <returns>解密成功返回解密后的字符串，失败返源串</returns> 
+        </member>
+        <member name="M:Ecdmin.Application.Utils.JwtUtil.Generate(System.String,System.String)">
+            <summary> 
+            生成jwt token
+            </summary> 
+            <param name="userId">用户id</param> 
+            <param name="username">用户名</param> 
+            <returns>成功返回jwt token字符串</returns> 
+        </member>
+    </members>
+</doc>
