@@ -1,18 +1,22 @@
 <template>
-  <div v-loading="loading" class="container">
+  <div :loading="loading" class="container">
     <el-card v-for="group in groupPermissions" :key="group.id">
       <div slot="header">
-        <span class="permission-group">{{ group.name }}</span>
+        <el-checkbox
+          v-model="radio[group.id].checked"
+          :indeterminate="radio[group.id].isIndeterminate"
+          @change="handleCheckAllChange(group.id)"
+        >全选</el-checkbox>
+        <span class="ml-15">{{ group.name }}</span>
       </div>
       <el-row>
-        <el-checkbox-group v-model="rolePermissions">
+        <el-checkbox-group v-model="rolePermissions" @change="handleCheckedRolePermissionsChange(group.id)">
           <el-col
             v-for="permission in group.permissions"
             :key="permission.id"
-            class="permission-item"
             :span="4"
           >
-            <el-checkbox :label="permission.id">
+            <el-checkbox :label="permission.id" @change="handleChecked(group.id, permission.id)">
               {{ permission.display_name }}
             </el-checkbox>
           </el-col>
@@ -24,6 +28,7 @@
 
 <script>
 import { listWithPermissions } from '@/api/permissionGroup'
+import { has } from 'lodash'
 
 export default {
   name: 'AssignPermission',
@@ -36,8 +41,10 @@ export default {
   data() {
     return {
       loading: false,
-      groupPermissions: [],
-      rolePermissions: []
+      groupPermissions: {},
+      rolePermissions: [],
+      radio: {},
+      checkedGroupPermissions: {}
     }
   },
   created() {
@@ -47,11 +54,51 @@ export default {
     getAll() {
       this.loading = true
       listWithPermissions().then(resp => {
-        this.groupPermissions = resp.data
+        resp.data.forEach(group => {
+          this.groupPermissions[group.id] = group
+          this.checkedGroupPermissions[group.id] = []
+          if (!has(this.radio, group.id)) {
+            this.$set(this.radio, group.id, {
+              checked: false,
+              isIndeterminate: false
+            })
+          }
+        })
         this.loading = false
       }).catch(() => {
         this.loading = false
       })
+    },
+    handleCheckAllChange(groupId) {
+      const checkedCount = this.checkedGroupPermissions[groupId].length
+      const permissionCount = this.groupPermissions[groupId].permissions.length
+      this.groupPermissions[groupId].permissions.forEach(permission => {
+        const index = this.rolePermissions.indexOf(permission.id)
+        if (checkedCount < permissionCount && index === -1) {
+          this.rolePermissions.push(permission.id)
+          this.checkedGroupPermissions[groupId].push(permission.id)
+          this.radio[groupId].checked = true
+          this.radio[groupId].isIndeterminate = false
+        } else if (checkedCount === permissionCount) {
+          this.rolePermissions.splice(index, 1)
+          const checkedIndex = this.checkedGroupPermissions[groupId].indexOf(permission.id)
+          this.checkedGroupPermissions[groupId].splice(checkedIndex, 1)
+        }
+      })
+    },
+    handleChecked(groupId, permissionId) {
+      const index = this.checkedGroupPermissions[groupId].indexOf(permissionId)
+      if (index >= 0) {
+        this.checkedGroupPermissions[groupId].splice(index, 1)
+      } else {
+        this.checkedGroupPermissions[groupId].push(permissionId)
+      }
+    },
+    handleCheckedRolePermissionsChange(groupId) {
+      const checkedCount = this.checkedGroupPermissions[groupId].length
+      const permissionCount = this.groupPermissions[groupId].permissions.length
+      this.radio[groupId].checked = permissionCount === checkedCount
+      this.radio[groupId].isIndeterminate = checkedCount > 0 && checkedCount < permissionCount
     }
   }
 }
