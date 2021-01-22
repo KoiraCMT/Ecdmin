@@ -11,8 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="EFCore.BulkExtensions" Version="3.2.7" />
     <PackageReference Include="Furion" Version="1.4.3" />
     <PackageReference Include="Furion.Extras.Authentication.JwtBearer" Version="1.1.0" />
+    <PackageReference Include="Furion.Extras.Logging.Serilog" Version="1.7.0" />
   </ItemGroup>
 
 </Project>

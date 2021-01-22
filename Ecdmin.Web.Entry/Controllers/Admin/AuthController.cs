@@ -13,19 +13,19 @@ namespace Ecdmin.Web.Entry.Controllers.Admin
 {
     public class AuthController : IDynamicApiController 
     {
-        private readonly IAdminUserService _adminUserService;
+        private readonly IAdministratorService _administratorService;
         private readonly IAuthorizationManager _authorizationManager;
 
-        public AuthController(IAdminUserService adminUserService, IAuthorizationManager authorizationManager)
+        public AuthController(IAdministratorService administratorService, IAuthorizationManager authorizationManager)
         {
-            _adminUserService = adminUserService;
+            _administratorService = administratorService;
             _authorizationManager = authorizationManager;
         }
 
-        [HttpPost]
+        [HttpPost, AllowAnonymous]
         public async Task<IActionResult> Login(AuthRequest.LoginInput input)
         {
-            var res = await _adminUserService.Login(input.Username, input.Password);
+            var res = await _administratorService.Login(input.Username, input.Password);
 
             return Response.Data(new
             {
@@ -34,16 +34,14 @@ namespace Ecdmin.Web.Entry.Controllers.Admin
         }
 
         [HttpGet]
-        [AppAuthorize]
         public async Task<IActionResult> Info()
         {
             var id = _authorizationManager.GetUserId();
-            var adminUser = await _adminUserService.Find(id);
+            var adminUser = await _administratorService.Find(id);
             return Response.Data(adminUser.Adapt<AuthInfoDto>());
         }
 
         [HttpPost]
-        [AppAuthorize]
         public IActionResult Logout()
         {
             return Response.Success();

@@ -16,6 +16,7 @@ namespace Ecdmin.Web.Entry
                 {
                     webBuilder.Inject()
                                      .UseStartup<Startup>();
-                });
+                })
+                .UseSerilogDefault();
     }
 }

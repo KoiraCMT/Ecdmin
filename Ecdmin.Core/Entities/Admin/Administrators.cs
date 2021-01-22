@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ecdmin.Core.Entities.Admin
 {
-    public class AdminUser : Entity, IEntityTypeBuilder<AdminUser>, IEntitySeedData<AdminUser>
+    public class Administrator : Entity, IEntityTypeBuilder<Administrator>, IEntitySeedData<Administrator>
     {
         /// <summary>
         /// 用户名
@@ -29,7 +29,7 @@ namespace Ecdmin.Core.Entities.Admin
         
         public string Avatar { get; set; }
 
-        public void Configure(EntityTypeBuilder<AdminUser> entityBuilder, DbContext dbContext, Type dbContextLocator)
+        public void Configure(EntityTypeBuilder<Administrator> entityBuilder, DbContext dbContext, Type dbContextLocator)
         {
             entityBuilder.ToTable("admin_user");
             
@@ -38,14 +38,14 @@ namespace Ecdmin.Core.Entities.Admin
             entityBuilder.HasQueryFilter(t => !t.IsDeleted);
         }
 
-        public IEnumerable<AdminUser> HasData(DbContext dbContext, Type dbContextLocator)
+        public IEnumerable<Administrator> HasData(DbContext dbContext, Type dbContextLocator)
         {
-            var adminUser = new AdminUser { Id = 1, Username = "echo", Password = "123123", Name = "echo", CreatedTime = DateTimeOffset.Now };
-            var passwordHasher = new PasswordHasher<AdminUser>(); 
-            adminUser.Password = passwordHasher.HashPassword(adminUser, adminUser.Password);
-            return new List<AdminUser>
+            var administrator = new Administrator { Id = 1, Username = "echo", Password = "123123", Name = "echo", CreatedTime = DateTimeOffset.Now };
+            var passwordHasher = new PasswordHasher<Administrator>();
+            administrator.Password = passwordHasher.HashPassword(administrator, administrator.Password);
+            return new List<Administrator>
             {
-               adminUser
+                administrator
             };
         }
     }

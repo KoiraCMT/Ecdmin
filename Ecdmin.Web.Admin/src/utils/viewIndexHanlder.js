@@ -47,14 +47,14 @@ export const simpleAdd = (th, api) => {
   })
 }
 
-export const simpleDelete = (th, api) => {
+export const simpleDelete = (th, api, id) => {
   th.$confirm('是否确认删除此数据?', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning'
   }).then(() => {
     th.loading = true
-    api.then(() => {
+    api(id).then(() => {
       deleteSuccess(th)
     })
   })

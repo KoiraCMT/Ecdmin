@@ -61,6 +61,7 @@
             分配权限
           </el-button>
           <el-button
+            v-if="scope.row.name !== 'admin'"
             :size="buttonSize"
             type="danger"
             @click="handleDelete(scope.row.id)"
@@ -111,8 +112,8 @@
         <el-button type="primary" :size="buttonSize" :loading="buttonLoading" @click="handleUpdate">确认</el-button>
       </div>
     </el-dialog>
-    <el-dialog title="分配权限" :visible.sync="dialogAssignPermissionVisible" fullscreen>
-      <assign-permission :id="nowRowData.row.id" />
+    <el-dialog title="分配权限" :visible.sync="dialogAssignPermissionVisible" width="80%">
+      <assign-permission :id="nowRowData.row.id" v-model="dialogAssignPermissionVisible" />
     </el-dialog>
   </el-card>
 </template>
@@ -178,7 +179,7 @@ export default {
       simpleUpdate(this, update)
     },
     handleDelete(id) {
-      simpleDelete(this, destroy(id))
+      simpleDelete(this, destroy, id)
     },
     handleAssignPermission(row) {
       this.dialogAssignPermissionVisible = true

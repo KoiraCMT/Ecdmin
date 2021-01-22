@@ -14,5 +14,7 @@ namespace Ecdmin.Application.Admin.IServices
         Task<bool> IsExisted(string name);
         Task<EntityEntry<Role>> Update(int id, RoleRequest.UpdateInput input);
         Task Delete(int id);
+        Task<Role> FindWithPermissions(int id);
+        Task AssignPermission(int id, RoleRequest.AssignPermissionInput input);
     }
 }

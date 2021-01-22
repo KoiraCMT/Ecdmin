@@ -4,12 +4,12 @@
         <name>Ecdmin.Core</name>
     </assembly>
     <members>
-        <member name="P:Ecdmin.Core.Entities.Admin.AdminUser.Username">
+        <member name="P:Ecdmin.Core.Entities.Admin.Administrator.Username">
             <summary>
             用户名
             </summary>
         </member>
-        <member name="P:Ecdmin.Core.Entities.Admin.AdminUser.Name">
+        <member name="P:Ecdmin.Core.Entities.Admin.Administrator.Name">
             <summary>
             名称
             </summary>

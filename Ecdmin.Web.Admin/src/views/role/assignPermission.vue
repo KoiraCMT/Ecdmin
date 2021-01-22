@@ -1,5 +1,5 @@
 <template>
-  <div :loading="loading" class="container">
+  <div v-loading="loading" class="container">
     <el-card v-for="group in groupPermissions" :key="group.id">
       <div slot="header">
         <el-checkbox
@@ -16,19 +16,24 @@
             :key="permission.id"
             :span="4"
           >
-            <el-checkbox :label="permission.id" @change="handleChecked(group.id, permission.id)">
+            <el-checkbox :label="permission.id">
               {{ permission.display_name }}
             </el-checkbox>
           </el-col>
         </el-checkbox-group>
       </el-row>
     </el-card>
+    <div class="dp-flex fd-rr">
+      <el-button :size="buttonSize" type="primary" @click="assign">分配</el-button>
+      <el-button class="mr-15" :size="buttonSize" @click="cancel">取消</el-button>
+    </div>
   </div>
 </template>
 
 <script>
 import { listWithPermissions } from '@/api/permissionGroup'
 import { has } from 'lodash'
+import { assignPermission, findWithPermissions } from '@/api/role'
 
 export default {
   name: 'AssignPermission',
@@ -40,23 +45,58 @@ export default {
   },
   data() {
     return {
+      buttonSize: 'small',
       loading: false,
       groupPermissions: {},
       rolePermissions: [],
       radio: {},
-      checkedGroupPermissions: {}
+      role: {},
+      groupIdWithPermissionIds: {},
+      buttonLoading: false
+    }
+  },
+  watch: {
+    id() {
+      this.findRoleWithPermissions()
     }
   },
   created() {
-    this.getAll()
+    this.getPermissions()
   },
   methods: {
-    getAll() {
+    findRoleWithPermissions() {
+      this.rolePermissions = []
+      this.loading = true
+      this.resetRadio()
+      findWithPermissions(this.id).then(res => {
+        const group_id = []
+        res.data.permissions.forEach(item => {
+          this.rolePermissions.push(item.id)
+          if (group_id.indexOf(item.permission_group_id) === -1) {
+            group_id.push(item.permission_group_id)
+          }
+        })
+        group_id.forEach(id => this.handleCheckedRolePermissionsChange(id))
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
+      })
+    },
+    resetRadio() {
+      for (const groupId in this.groupIdWithPermissionIds) {
+        this.radio[groupId].checked = false
+        this.radio[groupId].isIndeterminate = false
+      }
+    },
+    getPermissions() {
       this.loading = true
       listWithPermissions().then(resp => {
         resp.data.forEach(group => {
           this.groupPermissions[group.id] = group
-          this.checkedGroupPermissions[group.id] = []
+          this.groupIdWithPermissionIds[group.id] = []
+          group.permissions.forEach(permission => {
+            this.groupIdWithPermissionIds[group.id].push(permission.id)
+          })
           if (!has(this.radio, group.id)) {
             this.$set(this.radio, group.id, {
               checked: false,
@@ -64,41 +104,50 @@ export default {
             })
           }
         })
-        this.loading = false
+        this.findRoleWithPermissions()
       }).catch(() => {
         this.loading = false
       })
     },
     handleCheckAllChange(groupId) {
-      const checkedCount = this.checkedGroupPermissions[groupId].length
-      const permissionCount = this.groupPermissions[groupId].permissions.length
-      this.groupPermissions[groupId].permissions.forEach(permission => {
-        const index = this.rolePermissions.indexOf(permission.id)
-        if (checkedCount < permissionCount && index === -1) {
-          this.rolePermissions.push(permission.id)
-          this.checkedGroupPermissions[groupId].push(permission.id)
-          this.radio[groupId].checked = true
-          this.radio[groupId].isIndeterminate = false
-        } else if (checkedCount === permissionCount) {
-          this.rolePermissions.splice(index, 1)
-          const checkedIndex = this.checkedGroupPermissions[groupId].indexOf(permission.id)
-          this.checkedGroupPermissions[groupId].splice(checkedIndex, 1)
-        }
-      })
-    },
-    handleChecked(groupId, permissionId) {
-      const index = this.checkedGroupPermissions[groupId].indexOf(permissionId)
-      if (index >= 0) {
-        this.checkedGroupPermissions[groupId].splice(index, 1)
+      const permissions = this.groupIdWithPermissionIds[groupId]
+      const checked = permissions.filter(item => this.rolePermissions.includes(item))
+      if (checked.length === 0) {
+        this.rolePermissions.push(...permissions)
       } else {
-        this.checkedGroupPermissions[groupId].push(permissionId)
+        const checkedLen = checked.length
+        const permissionsLen = permissions.length
+        permissions.forEach(p => {
+          const index = this.rolePermissions.indexOf(p)
+          if (checkedLen === permissionsLen) {
+            this.rolePermissions.splice(index, 1)
+          } else if (index === -1) {
+            this.rolePermissions.push(p)
+            this.radio[groupId].checked = true
+            this.radio[groupId].isIndeterminate = false
+          }
+        })
       }
     },
     handleCheckedRolePermissionsChange(groupId) {
-      const checkedCount = this.checkedGroupPermissions[groupId].length
-      const permissionCount = this.groupPermissions[groupId].permissions.length
-      this.radio[groupId].checked = permissionCount === checkedCount
-      this.radio[groupId].isIndeterminate = checkedCount > 0 && checkedCount < permissionCount
+      const permissions = this.groupIdWithPermissionIds[groupId]
+      const checked = permissions.filter(item => this.rolePermissions.includes(item))
+      this.radio[groupId].checked = permissions.length === checked.length
+      this.radio[groupId].isIndeterminate = checked.length > 0 && checked.length < permissions.length
+    },
+    cancel() {
+      this.$emit('input', false)
+    },
+    assign() {
+      this.buttonLoading = true
+      assignPermission(this.id, { permission_ids: this.rolePermissions })
+        .then(() => {
+          this.$message.success('分配权限成功')
+          this.buttonLoading = false
+          this.cancel()
+        }).catch(() => {
+          this.buttonLoading = false
+        })
     }
   }
 }

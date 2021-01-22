@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Ecdmin.Application.Admin.Vos
 {
-    public class AdminUserRequest
+    public class AdministratorRequest
     {
         public class Base
         {

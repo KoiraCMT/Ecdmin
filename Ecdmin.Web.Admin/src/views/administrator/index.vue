@@ -111,7 +111,7 @@ import {
   simpleAdd,
   simpleDelete
 } from '@/utils/viewIndexHanlder'
-import { list, add, update, destroy } from '@/api/adminUser'
+import { list, add, update, destroy } from '@/api/administrator'
 import UploadImage from '@/components/Upload/UploadImage'
 
 export default {

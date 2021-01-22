@@ -1,4 +1,5 @@
-﻿using Ecdmin.Application.Admin.Vos;
+﻿using System.Linq;
+using Ecdmin.Application.Admin.Vos;
 using Ecdmin.Core.Entities.Admin;
 using Furion.ObjectMapper;
 using Mapster;
@@ -30,14 +31,19 @@ namespace Ecdmin.Application.Admin.Dtos
                 .Map(dest => dest.Description, src => src.Description)
                 .Map(dest => dest.CreatedTime, src => src.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss"))
                 .Map(dest => dest.UpdatedTime, src => src.UpdatedTime != null ? src.UpdatedTime.Value.ToString("yyyy-MM-dd HH:mm:ss") : null);
+            _config.ForType<Role, RoleDto.WithPermission>()
+                .Map(dest => dest.Id, src => src.Id)
+                .Map(dest => dest.Name, src => src.Name)
+                .Map(dest => dest.DisplayName, src => src.DisplayName)
+                .Map(dest => dest.Permissions, src => src.RolePermissions.Select(t => t.Permission));
         }
 
         private void AdminUser()
         {
-            _config.ForType<AuthRequest.LoginInput, AdminUser>()
+            _config.ForType<AuthRequest.LoginInput, Administrator>()
                 .Map(dest => dest.Username, src => src.Username)
                 .Map(dest => dest.Password, src => src.Password);
-            _config.ForType<AdminUser, AdminUserDto.List>()
+            _config.ForType<Administrator, AdministratorDto.List>()
                 .Map(dest => dest.Id, src => src.Id)
                 .Map(dest => dest.Username, src => src.Username)
                 .Map(dest => dest.Name, src => src.Name)

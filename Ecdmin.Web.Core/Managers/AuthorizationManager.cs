@@ -4,19 +4,22 @@ using Ecdmin.Core.Entities.Admin;
 using Furion.DatabaseAccessor;
 using Furion.DependencyInjection;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace Ecdmin.Web.Core.Managers
 {
     public class AuthorizationManager : IAuthorizationManager, ITransient
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IRepository<AdminUser> _adminUserRepository;
+        private readonly IRepository<Administrator> _administratorRepository;
+        private readonly ILogger<AuthorizationManager> _logger;
 
         public AuthorizationManager(IHttpContextAccessor httpContextAccessor
-            , IRepository<AdminUser> adminUserRepository)
+            , IRepository<Administrator> administratorRepository, ILogger<AuthorizationManager> logger)
         {
             _httpContextAccessor = httpContextAccessor;
-            _adminUserRepository = adminUserRepository;
+            _administratorRepository = administratorRepository;
+            _logger = logger;
         }
         
         public int GetUserId()
@@ -27,6 +30,7 @@ namespace Ecdmin.Web.Core.Managers
         public bool CheckPermission(string resourceId)
         {
             var userId = GetUserId();
+
             return true;
         }
     }

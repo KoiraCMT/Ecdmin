@@ -6,20 +6,20 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Ecdmin.Application.Admin.IServices
 {
-    public interface IAdminUserService
+    public interface IAdministratorService
     {
-        Task<EntityEntry<AdminUser>> Add(AdminUser adminUser);
+        Task<EntityEntry<Administrator>> Add(Administrator adminUser);
 
         Task<bool> IsExisted(string username);
         
         Task<string> Login(string username, string password);
 
-        Task<AdminUser> Find(int id);
+        Task<Administrator> Find(int id);
 
         // Task<> Get(PageRequest pageRequest);
-        Task<PagedList<AdminUser>> GetList(AdminUserRequest.Get getParams);
+        Task<PagedList<Administrator>> GetList(AdministratorRequest.Get getParams);
         
-        Task<EntityEntry<AdminUser>> Update(int id, AdminUserRequest.EditInput editInput);
+        Task<EntityEntry<Administrator>> Update(int id, AdministratorRequest.EditInput editInput);
         Task Delete(int id);
     }
 }

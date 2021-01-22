@@ -22,7 +22,7 @@ namespace Ecdmin.Web.Core.Handlers
 
             var authorizationManager = httpContext.RequestServices.GetService<IAuthorizationManager>();
             
-            return authorizationManager.CheckPermission(securityDefineAttribute.ResourceId);
+            return authorizationManager != null && authorizationManager.CheckPermission(securityDefineAttribute.ResourceId);
         }
     }
 }

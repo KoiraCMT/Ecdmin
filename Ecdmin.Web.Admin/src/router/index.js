@@ -159,8 +159,8 @@ export const constantRoutes = [
     },
     children: [
       {
-        path: 'admin-user',
-        component: () => import('@/views/admin-user/index'),
+        path: 'administrator',
+        component: () => import('@/views/administrator/index'),
         name: '用户管理',
         meta: { title: '用户管理' }
       },

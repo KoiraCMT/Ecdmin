@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Ecdmin.Application.Admin.Dtos
 {
-    public class AdminUserDto
+    public class AdministratorDto
     {
         public class List
         {

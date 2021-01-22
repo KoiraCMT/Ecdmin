@@ -19,6 +19,9 @@ namespace Ecdmin.Core.Entities.Admin
         {
             entityBuilder.ToTable("role_permission");
             entityBuilder.HasKey(t => new {t.RoleId, t.PermissionId});
+            entityBuilder.HasOne(t => t.Permission)
+                .WithMany(t => t.RolePermissions)
+                .HasForeignKey(t => t.PermissionId);
         }
     }
 }

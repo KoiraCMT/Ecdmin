@@ -1,12 +1,14 @@
 ﻿using System.IO;
 using Ecdmin.Web.Core.Handlers;
 using Furion;
+using Furion.UnifyResult;
 using Mapster;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 using AppSettingsOptions = Ecdmin.Web.Core.Options.AppSettingsOptions;
 
 namespace Ecdmin.Web.Core
@@ -15,7 +17,7 @@ namespace Ecdmin.Web.Core
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddJwt<JwtHandler>();
+            services.AddJwt<JwtHandler>(enableGlobalAuthorize: true);
 
             services.AddCorsAccessor();
 
@@ -35,19 +37,18 @@ namespace Ecdmin.Web.Core
             }
 
             app.UseHttpsRedirection();
-
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "public")),
+                RequestPath = "/public"
+            });
+            app.UseSerilogRequestLogging();
             app.UseRouting();
 
             app.UseCorsAccessor();
 
             app.UseAuthentication();
             app.UseAuthorization();
-
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "public")),
-                RequestPath = "/public"
-            });
 
             app.UseInject(string.Empty);
 

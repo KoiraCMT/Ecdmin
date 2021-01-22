@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ecdmin.Application.Common.Vos;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,12 @@ namespace Ecdmin.Application.Admin.Vos
         public class UpdateInput: AddInput
         {
             
+        }
+        
+        public class AssignPermissionInput
+        {
+            [Required]
+            public int[] PermissionIds { get; set; }
         }
     }
 }
