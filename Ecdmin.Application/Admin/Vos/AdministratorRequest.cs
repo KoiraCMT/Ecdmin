@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Ecdmin.Application.Common.Vos;
 using Furion.DataValidation;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Ecdmin.Application.Admin.Vos
 {
@@ -35,6 +34,11 @@ namespace Ecdmin.Application.Admin.Vos
         public class Get : PageRequest
         {
             public string Name { get; set; } = null;
+        }
+
+        public class AssignRole
+        {
+            public int[] RoleIds { get; set; }
         }
     }
 }

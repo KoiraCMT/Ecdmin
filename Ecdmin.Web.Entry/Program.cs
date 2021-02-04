@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace Ecdmin.Web.Entry
 {
@@ -17,6 +18,11 @@ namespace Ecdmin.Web.Entry
                     webBuilder.Inject()
                                      .UseStartup<Startup>();
                 })
-                .UseSerilogDefault();
+                .UseSerilogDefault(config =>
+                {
+                    config.WriteTo.Console(
+                        outputTemplate:
+                        "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj} {Properties:j}{NewLine}{Exception}");
+                });
     }
 }

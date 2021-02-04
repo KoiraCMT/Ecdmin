@@ -28,11 +28,11 @@ namespace Ecdmin.Application.Admin.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<EntityEntry<Administrator>> Add(Administrator Administrator)
+        public async Task<EntityEntry<Administrator>> Add(Administrator administrator)
         {
-            Administrator.Password = PasswordUtil.HashPassword(Administrator, Administrator.Password);
-            Administrator.CreatedTime = DateTimeOffset.Now;
-            return await _administratorRepository.InsertAsync(Administrator);
+            administrator.Password = PasswordUtil.HashPassword(administrator, administrator.Password);
+            administrator.CreatedTime = DateTimeOffset.Now;
+            return await _administratorRepository.InsertAsync(administrator);
         }
 
         public async Task<bool> IsExisted(string username)
@@ -59,7 +59,9 @@ namespace Ecdmin.Application.Admin.Services
 
         public async Task<PagedList<Administrator>> GetList(AdministratorRequest.Get getParams)
         {
-            var query = _administratorRepository.AsQueryable();
+            var query = _administratorRepository.AsQueryable()
+                .Include(t => t.AdministratorRoles)
+                .ThenInclude(t => t.Role).AsQueryable();
             if (!getParams.Name.IsNullOrEmpty())
             {
                 query = _administratorRepository.Where(t => t.Name.Contains(getParams.Name));
@@ -92,6 +94,22 @@ namespace Ecdmin.Application.Admin.Services
         public async Task Delete(int id)
         {
             await _administratorRepository.FakeDeleteAsync(id);
+        }
+
+        public async Task AssignRole(int id, AdministratorRequest.AssignRole input)
+        {
+            var administrator = await _administratorRepository.Include(t => t.AdministratorRoles).FirstOrDefaultAsync(t => t.Id == id);
+            if (administrator == null) ExceptionService.NotFound();
+            administrator.AdministratorRoles.Where(e =>
+                !input.RoleIds.Contains(e.RoleId)).ToList().ForEach(t => t.Delete());
+            input.RoleIds.Where(e => !administrator.AdministratorRoles.Select(t => t.RoleId).Contains(e))
+                .ToList()
+                .ForEach(t => administrator.AdministratorRoles.Add(new AdministratorRole
+                {
+                    AdministratorId = id,
+                    RoleId = t
+                }));
+            await administrator.UpdateAsync();
         }
     }
 }

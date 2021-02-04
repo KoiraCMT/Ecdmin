@@ -9,7 +9,7 @@
       :before-upload="handelBeforeUpload"
       :name="name"
     >
-      <img v-if="imageUrl" :src="imageUrl" class="avatar">
+      <img v-if="imageUrl" :src="imageUrl" class="avatar" alt="头像">
       <i v-else class="el-icon-plus avatar-uploader-icon" />
     </el-upload>
   </div>

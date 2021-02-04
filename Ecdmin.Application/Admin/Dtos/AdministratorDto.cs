@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace Ecdmin.Application.Admin.Dtos
@@ -13,6 +14,10 @@ namespace Ecdmin.Application.Admin.Dtos
             
             public string CreatedTime { get; set; }
             public string? UpdatedTime { get; set; }
+
+            public List<int> RoleIds { get; set; }
+
+            public string? Roles { get; set; }
         }
     }
 }

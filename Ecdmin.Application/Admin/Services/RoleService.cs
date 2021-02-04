@@ -12,6 +12,7 @@ using Furion.DependencyInjection;
 using Furion.LinqBuilder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Ecdmin.Application.Admin.Services
 {
@@ -19,11 +20,14 @@ namespace Ecdmin.Application.Admin.Services
     {
         private readonly IRepository<Role> _repository;
         private readonly IRepository<RolePermission> _rolePermissionRepository;
+        private readonly IMemoryCache _memoryCache;
+        private const string ROLE_WITH_PERMISSION_CACHE = "rwp";
 
-        public RoleService(IRepository<Role> repository, IRepository<RolePermission> rolePermissionRepository)
+        public RoleService(IRepository<Role> repository, IRepository<RolePermission> rolePermissionRepository, IMemoryCache memoryCache)
         {
             _repository = repository;
             _rolePermissionRepository = rolePermissionRepository;
+            _memoryCache = memoryCache;
         }
 
         public async Task<PagedList<Role>> Get(RoleRequest.Get query)
@@ -56,6 +60,7 @@ namespace Ecdmin.Application.Admin.Services
             role.DisplayName = input.DisplayName;
             role.Description = input.Description;
             role.UpdatedTime = DateTimeOffset.Now;
+            _memoryCache.Remove(ROLE_WITH_PERMISSION_CACHE + id);
             return await _repository.UpdateAsync(role);
         }
 
@@ -63,6 +68,7 @@ namespace Ecdmin.Application.Admin.Services
         {
             await _repository.DeleteAsync(id);
             await _rolePermissionRepository.Where(t => t.RoleId == id).BatchDeleteAsync();
+            _memoryCache.Remove(ROLE_WITH_PERMISSION_CACHE + id);
         }
 
         public async Task<Role> FindWithPermissions(int id)
@@ -70,6 +76,16 @@ namespace Ecdmin.Application.Admin.Services
             var role = await _repository.Include(t => t.RolePermissions).ThenInclude(t => t.Permission).FirstOrDefaultAsync(t => t.Id == id);
             if (role == null) ExceptionService.NotFound();
             return role;
+        }
+
+        public async Task<List<string>> GetPermissionsByRoleId(int roleId)
+        {
+            return await _memoryCache.GetOrCreateAsync(ROLE_WITH_PERMISSION_CACHE + roleId, async entry =>
+            {
+                entry.AbsoluteExpiration = DateTimeOffset.MaxValue;
+                var role = await FindWithPermissions(roleId);
+                return role.RolePermissions.Select(t => t.Permission.Name).ToList();
+            });
         }
 
         public async Task AssignPermission(int id, RoleRequest.AssignPermissionInput input)
@@ -88,6 +104,11 @@ namespace Ecdmin.Application.Admin.Services
                     RoleId = id
                 })); 
             await role.UpdateAsync();
+        }
+
+        public async Task<List<Role>> All()
+        {
+            return await _repository.AsAsyncEnumerable();
         }
     }
 }

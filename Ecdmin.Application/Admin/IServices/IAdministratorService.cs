@@ -21,5 +21,6 @@ namespace Ecdmin.Application.Admin.IServices
         
         Task<EntityEntry<Administrator>> Update(int id, AdministratorRequest.EditInput editInput);
         Task Delete(int id);
+        Task AssignRole(int id, AdministratorRequest.AssignRole input);
     }
 }

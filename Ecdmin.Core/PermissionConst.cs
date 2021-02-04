@@ -2,13 +2,13 @@ namespace Ecdmin.Core
 {
     public static class PermissionConst
     {
-        // admin-user permission
-        public static class AdminUser
+        // administrator permission
+        public static class Administrator
         {
-            public const string INDEX = "admin-user.index";
-            public const string ADD = "admin-user.add";
-            public const string UPDATE = "admin-user.update";
-            public const string DELETE = "admin-user.delete";
+            public const string INDEX = "administrator.index";
+            public const string ADD = "administrator.add";
+            public const string UPDATE = "administrator.update";
+            public const string DELETE = "administrator.delete";
         }
 
         // permission node

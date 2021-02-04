@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ecdmin.Database.Migrations.Migrations
 {
     [DbContext(typeof(SqlServerDbContext))]
-    [Migration("20210108085110_init")]
+    [Migration("20210203055056_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ namespace Ecdmin.Database.Migrations.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.1");
 
-            modelBuilder.Entity("Ecdmin.Core.Entities.Admin.AdminUser", b =>
+            modelBuilder.Entity("Ecdmin.Core.Entities.Admin.Administrator", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -59,18 +59,33 @@ namespace Ecdmin.Database.Migrations.Migrations
 
                     b.HasIndex("Username");
 
-                    b.ToTable("admin_user");
+                    b.ToTable("administrator");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            CreatedTime = new DateTimeOffset(new DateTime(2021, 1, 8, 16, 51, 9, 639, DateTimeKind.Unspecified).AddTicks(6690), new TimeSpan(0, 8, 0, 0, 0)),
+                            CreatedTime = new DateTimeOffset(new DateTime(2021, 2, 3, 13, 50, 55, 776, DateTimeKind.Unspecified).AddTicks(7600), new TimeSpan(0, 8, 0, 0, 0)),
                             IsDeleted = false,
                             Name = "echo",
-                            Password = "AQAAAAEAACcQAAAAEMpry8Lr57SQZCcJZJyBOU3CaECBsADyjWRvl/PiT7jhlvWNWIL78QbVyC4jGIVkNw==",
+                            Password = "AQAAAAEAACcQAAAAEJR9eS0Xh/0/kfXScR0qrO/xUTjWo5Qk+VdIN/CBMNpSJsKzTEFNbMVUcJIPCKldwA==",
                             Username = "echo"
                         });
+                });
+
+            modelBuilder.Entity("Ecdmin.Core.Entities.Admin.AdministratorRole", b =>
+                {
+                    b.Property<int>("AdministratorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AdministratorId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("administrator_role");
                 });
 
             modelBuilder.Entity("Ecdmin.Core.Entities.Admin.Permission", b =>
@@ -98,6 +113,43 @@ namespace Ecdmin.Database.Migrations.Migrations
                     b.HasIndex("PermissionGroupId");
 
                     b.ToTable("permission");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DisplayName = "首页",
+                            Name = "administrator.index",
+                            PermissionGroupId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DisplayName = "新增",
+                            Name = "administrator.add",
+                            PermissionGroupId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            DisplayName = "修改",
+                            Name = "administrator.update",
+                            PermissionGroupId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            DisplayName = "删除",
+                            Name = "administrator.delete",
+                            PermissionGroupId = 1
+                        },
+                        new
+                        {
+                            Id = 5,
+                            DisplayName = "首页",
+                            Name = "permission.index",
+                            PermissionGroupId = 2
+                        });
                 });
 
             modelBuilder.Entity("Ecdmin.Core.Entities.Admin.PermissionGroup", b =>
@@ -115,6 +167,23 @@ namespace Ecdmin.Database.Migrations.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("permission_group");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "用户管理"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "权限管理"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "角色管理"
+                        });
                 });
 
             modelBuilder.Entity("Ecdmin.Core.Entities.Admin.Role", b =>
@@ -163,6 +232,25 @@ namespace Ecdmin.Database.Migrations.Migrations
                     b.ToTable("role_permission");
                 });
 
+            modelBuilder.Entity("Ecdmin.Core.Entities.Admin.AdministratorRole", b =>
+                {
+                    b.HasOne("Ecdmin.Core.Entities.Admin.Administrator", "Administrator")
+                        .WithMany()
+                        .HasForeignKey("AdministratorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Ecdmin.Core.Entities.Admin.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Administrator");
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("Ecdmin.Core.Entities.Admin.Permission", b =>
                 {
                     b.HasOne("Ecdmin.Core.Entities.Admin.PermissionGroup", null)
@@ -175,13 +263,13 @@ namespace Ecdmin.Database.Migrations.Migrations
             modelBuilder.Entity("Ecdmin.Core.Entities.Admin.RolePermission", b =>
                 {
                     b.HasOne("Ecdmin.Core.Entities.Admin.Permission", "Permission")
-                        .WithMany()
+                        .WithMany("RolePermissions")
                         .HasForeignKey("PermissionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Ecdmin.Core.Entities.Admin.Role", "Role")
-                        .WithMany()
+                        .WithMany("RolePermissions")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -191,9 +279,19 @@ namespace Ecdmin.Database.Migrations.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("Ecdmin.Core.Entities.Admin.Permission", b =>
+                {
+                    b.Navigation("RolePermissions");
+                });
+
             modelBuilder.Entity("Ecdmin.Core.Entities.Admin.PermissionGroup", b =>
                 {
                     b.Navigation("Permissions");
+                });
+
+            modelBuilder.Entity("Ecdmin.Core.Entities.Admin.Role", b =>
+                {
+                    b.Navigation("RolePermissions");
                 });
 #pragma warning restore 612, 618
         }

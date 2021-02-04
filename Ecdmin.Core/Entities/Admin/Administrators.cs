@@ -29,9 +29,11 @@ namespace Ecdmin.Core.Entities.Admin
         
         public string Avatar { get; set; }
 
+        public virtual ICollection<AdministratorRole> AdministratorRoles { get; set; }
+
         public void Configure(EntityTypeBuilder<Administrator> entityBuilder, DbContext dbContext, Type dbContextLocator)
         {
-            entityBuilder.ToTable("admin_user");
+            entityBuilder.ToTable("administrator");
             
             entityBuilder.HasIndex(u => u.Username);
             //软删除过滤

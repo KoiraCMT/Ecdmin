@@ -1,0 +1,211 @@
+2021-02-02 15:42:04.529 +08:00 [INF] Now listening on: https://localhost:5001
+2021-02-02 15:42:04.577 +08:00 [INF] Now listening on: http://localhost:5000
+2021-02-02 15:42:04.578 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2021-02-02 15:42:04.578 +08:00 [INF] Hosting environment: Development
+2021-02-02 15:42:04.578 +08:00 [INF] Content root path: /Users/echochiang/Code/Ecdmin/Ecdmin.Web.Entry
+2021-02-02 15:42:05.261 +08:00 [INF] HTTP GET / responded 301 in 142.8242 ms
+2021-02-02 15:42:05.393 +08:00 [INF] HTTP GET /index.html responded 200 in 95.5282 ms
+2021-02-02 15:42:05.454 +08:00 [INF] HTTP GET /swagger-ui-standalone-preset.js responded 200 in 5.9817 ms
+2021-02-02 15:42:05.460 +08:00 [INF] HTTP GET /swagger-ui.css responded 200 in 29.8765 ms
+2021-02-02 15:42:05.484 +08:00 [INF] HTTP GET /swagger-ui-bundle.js responded 200 in 47.6592 ms
+2021-02-02 15:42:05.854 +08:00 [INF] HTTP GET /favicon-32x32.png responded 200 in 0.2858 ms
+2021-02-02 15:42:05.945 +08:00 [INF] HTTP GET /swagger/Default/swagger.json responded 200 in 220.7162 ms
+2021-02-02 15:42:48.252 +08:00 [INF] HTTP OPTIONS /api/auth/info responded 204 in 9.7176 ms
+2021-02-02 15:42:48.472 +08:00 [INF] HTTP GET /api/auth/info responded 401 in 216.9030 ms
+2021-02-02 15:43:00.621 +08:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 2.1095 ms
+2021-02-02 15:43:01.644 +08:00 [WRN] Entity 'Administrator' has a global query filter defined and is the required end of a relationship with the entity 'AdministratorRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2021-02-02 15:43:01.653 +08:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2021-02-02 15:43:01.911 +08:00 [INF] Entity Framework Core 5.0.1 initialized 'SqlServerDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer' with options: SensitiveDataLoggingEnabled DetailedErrorsEnabled MaxPoolSize=100 MigrationsAssembly=Ecdmin.Database.Migrations 
+2021-02-02 15:43:02.886 +08:00 [INF] Executed DbCommand (78ms) [Parameters=[@__username_0='echo' (Size = 30)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[Avatar], [a].[CreatedTime], [a].[IsDeleted], [a].[Name], [a].[Password], [a].[UpdatedTime], [a].[Username]
+FROM [admin_user] AS [a]
+WHERE ([a].[IsDeleted] <> CAST(1 AS bit)) AND ([a].[Username] = @__username_0)
+2021-02-02 15:43:03.122 +08:00 [INF] HTTP POST /api/auth/login responded 200 in 2498.1298 ms
+2021-02-02 15:43:03.145 +08:00 [INF] HTTP OPTIONS /api/auth/info responded 204 in 0.0418 ms
+2021-02-02 15:43:03.219 +08:00 [INF] Executed DbCommand (6ms) [Parameters=[@__p_0='1'], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[Avatar], [a].[CreatedTime], [a].[IsDeleted], [a].[Name], [a].[Password], [a].[UpdatedTime], [a].[Username]
+FROM [admin_user] AS [a]
+WHERE ([a].[IsDeleted] <> CAST(1 AS bit)) AND ([a].[Id] = @__p_0)
+2021-02-02 15:43:03.267 +08:00 [INF] HTTP GET /api/auth/info responded 200 in 120.0747 ms
+2021-02-02 15:43:24.555 +08:00 [INF] HTTP OPTIONS /api/role?page=1&page_size=15 responded 204 in 0.0801 ms
+2021-02-02 15:43:24.621 +08:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [role] AS [r]
+2021-02-02 15:43:24.642 +08:00 [INF] Executed DbCommand (3ms) [Parameters=[@__p_0='0', @__p_1='15'], CommandType='"Text"', CommandTimeout='30']
+SELECT [r].[Id], [r].[CreatedTime], [r].[Description], [r].[DisplayName], [r].[Name], [r].[UpdatedTime]
+FROM [role] AS [r]
+ORDER BY [r].[Id]
+OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+2021-02-02 15:43:24.692 +08:00 [INF] HTTP GET /api/role?page=1&page_size=15 responded 200 in 135.8384 ms
+2021-02-02 15:43:26.230 +08:00 [INF] HTTP OPTIONS /api/permission-group?page=1&page_size=15 responded 204 in 0.0730 ms
+2021-02-02 15:43:26.255 +08:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [permission_group] AS [p]
+2021-02-02 15:43:26.264 +08:00 [INF] Executed DbCommand (3ms) [Parameters=[@__p_0='0', @__p_1='15'], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[Name]
+FROM [permission_group] AS [p]
+ORDER BY [p].[Id]
+OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+2021-02-02 15:43:26.278 +08:00 [INF] HTTP GET /api/permission-group?page=1&page_size=15 responded 200 in 46.3472 ms
+2021-02-02 15:43:26.293 +08:00 [INF] HTTP OPTIONS /api/permission?group_id=1&page=1&page_size=15 responded 204 in 0.0585 ms
+2021-02-02 15:43:26.315 +08:00 [INF] Executed DbCommand (4ms) [Parameters=[@__query_PermissionGroupId_0='1' (Nullable = true)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [permission] AS [p]
+WHERE [p].[PermissionGroupId] = @__query_PermissionGroupId_0
+2021-02-02 15:43:26.325 +08:00 [INF] Executed DbCommand (4ms) [Parameters=[@__query_PermissionGroupId_0='1' (Nullable = true), @__p_1='0', @__p_2='15'], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[DisplayName], [p].[Name], [p].[PermissionGroupId]
+FROM [permission] AS [p]
+WHERE [p].[PermissionGroupId] = @__query_PermissionGroupId_0
+ORDER BY [p].[Id]
+OFFSET @__p_1 ROWS FETCH NEXT @__p_2 ROWS ONLY
+2021-02-02 15:43:26.342 +08:00 [INF] HTTP GET /api/permission?group_id=1&page=1&page_size=15 responded 200 in 47.1752 ms
+2021-02-02 15:43:28.744 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [role] AS [r]
+2021-02-02 15:43:28.747 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='0', @__p_1='15'], CommandType='"Text"', CommandTimeout='30']
+SELECT [r].[Id], [r].[CreatedTime], [r].[Description], [r].[DisplayName], [r].[Name], [r].[UpdatedTime]
+FROM [role] AS [r]
+ORDER BY [r].[Id]
+OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+2021-02-02 15:43:28.749 +08:00 [INF] HTTP GET /api/role?page=1&page_size=15 responded 200 in 14.3852 ms
+2021-02-02 15:43:30.067 +08:00 [INF] HTTP OPTIONS /api/permission-group/with-permissions responded 204 in 0.0686 ms
+2021-02-02 15:43:30.185 +08:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[Name], [p0].[Id], [p0].[DisplayName], [p0].[Name], [p0].[PermissionGroupId]
+FROM [permission_group] AS [p]
+LEFT JOIN [permission] AS [p0] ON [p].[Id] = [p0].[PermissionGroupId]
+ORDER BY [p].[Id], [p0].[Id]
+2021-02-02 15:43:30.203 +08:00 [INF] HTTP GET /api/permission-group/with-permissions responded 200 in 133.9507 ms
+2021-02-02 15:43:30.206 +08:00 [INF] HTTP OPTIONS /api/role/with-permissions/1 responded 204 in 0.0890 ms
+2021-02-02 15:43:30.271 +08:00 [INF] Executed DbCommand (7ms) [Parameters=[@__id_0='1'], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[CreatedTime], [t].[Description], [t].[DisplayName], [t].[Name], [t].[UpdatedTime], [t0].[RoleId], [t0].[PermissionId], [t0].[Id], [t0].[DisplayName], [t0].[Name], [t0].[PermissionGroupId]
+FROM (
+    SELECT TOP(1) [r].[Id], [r].[CreatedTime], [r].[Description], [r].[DisplayName], [r].[Name], [r].[UpdatedTime]
+    FROM [role] AS [r]
+    WHERE [r].[Id] = @__id_0
+) AS [t]
+LEFT JOIN (
+    SELECT [r0].[RoleId], [r0].[PermissionId], [p].[Id], [p].[DisplayName], [p].[Name], [p].[PermissionGroupId]
+    FROM [role_permission] AS [r0]
+    INNER JOIN [permission] AS [p] ON [r0].[PermissionId] = [p].[Id]
+) AS [t0] ON [t].[Id] = [t0].[RoleId]
+ORDER BY [t].[Id], [t0].[RoleId], [t0].[PermissionId], [t0].[Id]
+2021-02-02 15:43:30.312 +08:00 [INF] HTTP GET /api/role/with-permissions/1 responded 200 in 104.1959 ms
+2021-02-02 15:43:34.447 +08:00 [INF] HTTP OPTIONS /api/administrator?page=1&page_size=15 responded 204 in 0.1531 ms
+2021-02-02 15:43:34.470 +08:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [admin_user] AS [a]
+WHERE [a].[IsDeleted] <> CAST(1 AS bit)
+2021-02-02 15:43:34.480 +08:00 [INF] Executed DbCommand (3ms) [Parameters=[@__p_0='0', @__p_1='15'], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[Avatar], [a].[CreatedTime], [a].[IsDeleted], [a].[Name], [a].[Password], [a].[UpdatedTime], [a].[Username]
+FROM [admin_user] AS [a]
+WHERE [a].[IsDeleted] <> CAST(1 AS bit)
+ORDER BY [a].[Id] DESC
+OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+2021-02-02 15:43:34.492 +08:00 [INF] HTTP GET /api/administrator?page=1&page_size=15 responded 200 in 43.6894 ms
+2021-02-02 15:43:35.246 +08:00 [INF] HTTP OPTIONS /api/administrator/5 responded 204 in 0.0513 ms
+2021-02-02 15:43:35.363 +08:00 [INF] Executed DbCommand (5ms) [Parameters=[@p1='5', @p0='True'], CommandType='"Text"', CommandTimeout='30']
+SET NOCOUNT ON;
+UPDATE [admin_user] SET [IsDeleted] = @p0
+WHERE [Id] = @p1;
+SELECT @@ROWCOUNT;
+2021-02-02 15:43:35.389 +08:00 [INF] HTTP DELETE /api/administrator/5 responded 200 in 141.0029 ms
+2021-02-02 15:43:41.238 +08:00 [INF] HTTP OPTIONS /api/role?page=1&page_size=15 responded 204 in 0.0546 ms
+2021-02-02 15:43:41.246 +08:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [role] AS [r]
+2021-02-02 15:43:41.250 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='0', @__p_1='15'], CommandType='"Text"', CommandTimeout='30']
+SELECT [r].[Id], [r].[CreatedTime], [r].[Description], [r].[DisplayName], [r].[Name], [r].[UpdatedTime]
+FROM [role] AS [r]
+ORDER BY [r].[Id]
+OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+2021-02-02 15:43:41.251 +08:00 [INF] HTTP GET /api/role?page=1&page_size=15 responded 200 in 11.4742 ms
+2021-02-02 15:43:43.086 +08:00 [INF] HTTP OPTIONS /api/permission-group?page=1&page_size=15 responded 204 in 0.1658 ms
+2021-02-02 15:43:43.093 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [permission_group] AS [p]
+2021-02-02 15:43:43.097 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='0', @__p_1='15'], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[Name]
+FROM [permission_group] AS [p]
+ORDER BY [p].[Id]
+OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+2021-02-02 15:43:43.098 +08:00 [INF] HTTP GET /api/permission-group?page=1&page_size=15 responded 200 in 10.7988 ms
+2021-02-02 15:43:43.109 +08:00 [INF] HTTP OPTIONS /api/permission?group_id=1&page=1&page_size=15 responded 204 in 0.0372 ms
+2021-02-02 15:43:43.115 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[@__query_PermissionGroupId_0='1' (Nullable = true)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [permission] AS [p]
+WHERE [p].[PermissionGroupId] = @__query_PermissionGroupId_0
+2021-02-02 15:43:43.119 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[@__query_PermissionGroupId_0='1' (Nullable = true), @__p_1='0', @__p_2='15'], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[DisplayName], [p].[Name], [p].[PermissionGroupId]
+FROM [permission] AS [p]
+WHERE [p].[PermissionGroupId] = @__query_PermissionGroupId_0
+ORDER BY [p].[Id]
+OFFSET @__p_1 ROWS FETCH NEXT @__p_2 ROWS ONLY
+2021-02-02 15:43:43.121 +08:00 [INF] HTTP GET /api/permission?group_id=1&page=1&page_size=15 responded 200 in 11.0448 ms
+2021-02-02 15:43:46.476 +08:00 [INF] HTTP OPTIONS /api/administrator?page=1&page_size=15 responded 204 in 0.0414 ms
+2021-02-02 15:43:46.484 +08:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [admin_user] AS [a]
+WHERE [a].[IsDeleted] <> CAST(1 AS bit)
+2021-02-02 15:43:46.488 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='0', @__p_1='15'], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[Avatar], [a].[CreatedTime], [a].[IsDeleted], [a].[Name], [a].[Password], [a].[UpdatedTime], [a].[Username]
+FROM [admin_user] AS [a]
+WHERE [a].[IsDeleted] <> CAST(1 AS bit)
+ORDER BY [a].[Id] DESC
+OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+2021-02-02 15:43:46.490 +08:00 [INF] HTTP GET /api/administrator?page=1&page_size=15 responded 200 in 12.6904 ms
+2021-02-02 15:43:52.836 +08:00 [INF] HTTP OPTIONS /api/permission-group?page=1&page_size=15 responded 204 in 0.0452 ms
+2021-02-02 15:43:52.844 +08:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [permission_group] AS [p]
+2021-02-02 15:43:52.850 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='0', @__p_1='15'], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[Name]
+FROM [permission_group] AS [p]
+ORDER BY [p].[Id]
+OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+2021-02-02 15:43:52.851 +08:00 [INF] HTTP GET /api/permission-group?page=1&page_size=15 responded 200 in 12.8347 ms
+2021-02-02 15:43:52.862 +08:00 [INF] HTTP OPTIONS /api/permission?group_id=1&page=1&page_size=15 responded 204 in 0.0575 ms
+2021-02-02 15:43:52.870 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[@__query_PermissionGroupId_0='1' (Nullable = true)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [permission] AS [p]
+WHERE [p].[PermissionGroupId] = @__query_PermissionGroupId_0
+2021-02-02 15:43:52.874 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[@__query_PermissionGroupId_0='1' (Nullable = true), @__p_1='0', @__p_2='15'], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[DisplayName], [p].[Name], [p].[PermissionGroupId]
+FROM [permission] AS [p]
+WHERE [p].[PermissionGroupId] = @__query_PermissionGroupId_0
+ORDER BY [p].[Id]
+OFFSET @__p_1 ROWS FETCH NEXT @__p_2 ROWS ONLY
+2021-02-02 15:43:52.875 +08:00 [INF] HTTP GET /api/permission?group_id=1&page=1&page_size=15 responded 200 in 11.2840 ms
+2021-02-02 15:43:58.355 +08:00 [INF] HTTP OPTIONS /api/vue-admin-template/table/list responded 204 in 0.0399 ms
+2021-02-02 15:43:58.358 +08:00 [INF] HTTP GET /api/vue-admin-template/table/list responded 404 in 1.1203 ms
+2021-02-02 15:44:01.832 +08:00 [INF] HTTP OPTIONS /api/role?page=1&page_size=15 responded 204 in 0.0289 ms
+2021-02-02 15:44:01.839 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [role] AS [r]
+2021-02-02 15:44:01.843 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='0', @__p_1='15'], CommandType='"Text"', CommandTimeout='30']
+SELECT [r].[Id], [r].[CreatedTime], [r].[Description], [r].[DisplayName], [r].[Name], [r].[UpdatedTime]
+FROM [role] AS [r]
+ORDER BY [r].[Id]
+OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+2021-02-02 15:44:01.844 +08:00 [INF] HTTP GET /api/role?page=1&page_size=15 responded 200 in 9.8457 ms
+2021-02-02 15:44:02.515 +08:00 [INF] HTTP OPTIONS /api/permission-group?page=1&page_size=15 responded 204 in 0.0277 ms
+2021-02-02 15:44:02.520 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [permission_group] AS [p]
+2021-02-02 15:44:02.524 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='0', @__p_1='15'], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[Name]
+FROM [permission_group] AS [p]
+ORDER BY [p].[Id]
+OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+2021-02-02 15:44:02.526 +08:00 [INF] HTTP GET /api/permission-group?page=1&page_size=15 responded 200 in 9.9492 ms
+2021-02-02 15:44:02.535 +08:00 [INF] HTTP OPTIONS /api/permission?group_id=1&page=1&page_size=15 responded 204 in 0.0312 ms
+2021-02-02 15:44:02.541 +08:00 [INF] Executed DbCommand (3ms) [Parameters=[@__query_PermissionGroupId_0='1' (Nullable = true)], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [permission] AS [p]
+WHERE [p].[PermissionGroupId] = @__query_PermissionGroupId_0
+2021-02-02 15:44:02.546 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[@__query_PermissionGroupId_0='1' (Nullable = true), @__p_1='0', @__p_2='15'], CommandType='"Text"', CommandTimeout='30']
+SELECT [p].[Id], [p].[DisplayName], [p].[Name], [p].[PermissionGroupId]
+FROM [permission] AS [p]
+WHERE [p].[PermissionGroupId] = @__query_PermissionGroupId_0
+ORDER BY [p].[Id]
+OFFSET @__p_1 ROWS FETCH NEXT @__p_2 ROWS ONLY
+2021-02-02 15:44:02.547 +08:00 [INF] HTTP GET /api/permission?group_id=1&page=1&page_size=15 responded 200 in 10.7435 ms

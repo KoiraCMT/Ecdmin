@@ -7,3 +7,5 @@ export const add = (data) => request.post('/administrator', data)
 export const update = (id, data) => request.put(`/administrator/${id}`, data)
 
 export const destroy = (id) => request.delete(`/administrator/${id}`)
+
+export const assignRole = (id, data) => request.post(`/administrator/assign-role/${id}`, data)

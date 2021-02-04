@@ -12,7 +12,6 @@ namespace Ecdmin.Application.Admin.Services
     public class PermissionService : IPermissionService, ITransient
     {
         private readonly IRepository<Permission> _repository;
-        private IPermissionService _permissionServiceImplementation;
 
         public PermissionService(IRepository<Permission> repository)
         {

@@ -31,6 +31,10 @@
         label="名称"
       />
       <el-table-column
+        prop="roles"
+        label="角色"
+      />
+      <el-table-column
         prop="created_time"
         label="创建时间"
       />
@@ -52,6 +56,12 @@
           </el-button>
           <el-button
             :size="buttonSize"
+            @click="handleAssignRole(scope.row)"
+          >
+            分配角色
+          </el-button>
+          <el-button
+            :size="buttonSize"
             type="danger"
             @click="handleDelete(scope.row.id)"
           >
@@ -67,7 +77,7 @@
       :total="pagination.total"
       @current-change="getList"
     />
-    <el-dialog title="新增" :visible.sync="dialogAddFormVisible" width="30%">
+    <el-dialog title="新增" :visible.sync="dialogAddFormVisible" width="50%">
       <el-form ref="addForm" :model="addForm" :rules="addRules" :size="formSize">
         <el-form-item label="用户名" prop="username" :label-width="formLabelWidth">
           <el-input v-model="addForm.username" />
@@ -84,7 +94,7 @@
         <el-button type="primary" :size="buttonSize" :loading="buttonLoading" @click="handleAdd">确认</el-button>
       </div>
     </el-dialog>
-    <el-dialog title="修改" :visible.sync="dialogEditFormVisible" width="30%">
+    <el-dialog title="修改" :visible.sync="dialogEditFormVisible" width="50%">
       <el-form ref="editForm" :model="editForm" :rules="editRules" :size="formSize">
         <el-form-item label="密码" prop="password" :label-width="formLabelWidth">
           <el-input v-model="editForm.password" type="password" />
@@ -101,6 +111,22 @@
         <el-button type="primary" :size="buttonSize" :loading="buttonLoading" @click="handleUpdate">确认</el-button>
       </div>
     </el-dialog>
+    <el-dialog title="分配角色" :visible.sync="dialogAssignRoleFormVisible" width="40%">
+      <el-form ref="assignRoleForm" :model="assignRoleForm" :rules="assignRoleRules" :size="formSize">
+        <el-select v-model="assignRoleForm.role_ids" multiple placeholder="请选择" class="w-100">
+          <el-option
+            v-for="item in roleOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button :size="buttonSize" @click="dialogAssignRoleFormVisible = false">取消</el-button>
+        <el-button type="primary" :size="buttonSize" :loading="buttonLoading" @click="assignRole">确认</el-button>
+      </div>
+    </el-dialog>
   </el-card>
 </template>
 <script>
@@ -111,14 +137,20 @@ import {
   simpleAdd,
   simpleDelete
 } from '@/utils/viewIndexHanlder'
-import { list, add, update, destroy } from '@/api/administrator'
+import { list, add, update, destroy, assignRole } from '@/api/administrator'
+import { roles } from '@/api/selector'
 import UploadImage from '@/components/Upload/UploadImage'
 
 export default {
   components: { UploadImage },
   mixins: [queryParams],
   data() {
+    const requiredAndBetween = [
+      { required: true },
+      { min: 3, max: 20 }
+    ]
     return {
+      dialogAssignRoleFormVisible: false,
       addForm: {
         username: '',
         name: '',
@@ -126,14 +158,8 @@ export default {
         avatar: ''
       },
       addRules: {
-        name: [
-          { required: true },
-          { min: 3, max: 20 }
-        ],
-        username: [
-          { required: true },
-          { min: 3, max: 20 }
-        ],
+        name: requiredAndBetween,
+        username: requiredAndBetween,
         password: [
           { required: true },
           { min: 6, max: 32 }
@@ -144,19 +170,21 @@ export default {
         password: ''
       },
       editRules: {
-        name: [
-          { required: true },
-          { min: 3, max: 20 }
-        ],
-        username: [
-          { required: true },
-          { min: 3, max: 20 }
-        ]
-      }
+        name: requiredAndBetween,
+        username: requiredAndBetween
+      },
+      assignRoleForm: {
+        role_ids: []
+      },
+      assignRoleRules: {
+        role_ids: []
+      },
+      roleOptions: []
     }
   },
   mounted() {
     this.getList()
+    this.initSelector()
   },
   methods: {
     getList() {
@@ -178,11 +206,29 @@ export default {
     },
     handleDelete(id) {
       simpleDelete(this, destroy(id))
+    },
+    handleAssignRole(row) {
+      this.assignRoleForm = row
+      this.nowRowData = { row }
+      this.dialogAssignRoleFormVisible = true
+    },
+    initSelector() {
+      roles().then(res => {
+        this.roleOptions = res.data
+      })
+    },
+    assignRole() {
+      this.buttonLoading = true
+      assignRole(this.nowRowData.row.id, { role_ids: this.assignRoleForm.role_ids })
+        .then(() => {
+          this.$message.success('分配角色成功')
+          this.buttonLoading = false
+          this.dialogAssignRoleFormVisible = false
+          this.getList()
+        }).catch(() => {
+          this.buttonLoading = false
+        })
     }
   }
 }
 </script>
-
-<style scoped lang="scss">
-
-</style>

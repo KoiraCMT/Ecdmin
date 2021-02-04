@@ -1,0 +1,57 @@
+2021-02-03 09:58:35.398 +08:00 [INF] Now listening on: https://localhost:5001
+2021-02-03 09:58:35.486 +08:00 [INF] Now listening on: http://localhost:5000
+2021-02-03 09:58:35.487 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2021-02-03 09:58:35.487 +08:00 [INF] Hosting environment: Development
+2021-02-03 09:58:35.487 +08:00 [INF] Content root path: /Users/echochiang/Code/Ecdmin/Ecdmin.Web.Entry
+2021-02-03 09:58:36.394 +08:00 [INF] HTTP GET /index.html responded 200 in 346.3191 ms
+2021-02-03 09:58:36.471 +08:00 [INF] HTTP GET /swagger-ui-standalone-preset.js responded 200 in 27.7349 ms
+2021-02-03 09:58:36.513 +08:00 [INF] HTTP GET /swagger-ui-bundle.js responded 200 in 66.6670 ms
+2021-02-03 09:58:37.143 +08:00 [INF] HTTP GET /swagger/Default/swagger.json responded 200 in 304.8274 ms
+2021-02-03 09:58:49.240 +08:00 [INF] HTTP OPTIONS /api/auth/info responded 204 in 4.2469 ms
+2021-02-03 09:58:50.380 +08:00 [WRN] Entity 'Administrator' has a global query filter defined and is the required end of a relationship with the entity 'AdministratorRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2021-02-03 09:58:50.388 +08:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2021-02-03 09:58:50.625 +08:00 [INF] Entity Framework Core 5.0.1 initialized 'SqlServerDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer' with options: SensitiveDataLoggingEnabled DetailedErrorsEnabled MaxPoolSize=100 MigrationsAssembly=Ecdmin.Database.Migrations 
+2021-02-03 09:58:51.488 +08:00 [INF] Executed DbCommand (60ms) [Parameters=[@__p_0='1'], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [a].[Id], [a].[Avatar], [a].[CreatedTime], [a].[IsDeleted], [a].[Name], [a].[Password], [a].[UpdatedTime], [a].[Username]
+FROM [admin_user] AS [a]
+WHERE ([a].[IsDeleted] <> CAST(1 AS bit)) AND ([a].[Id] = @__p_0)
+2021-02-03 09:58:51.707 +08:00 [INF] HTTP GET /api/auth/info responded 200 in 2465.0956 ms
+2021-02-03 10:09:45.770 +08:00 [INF] Now listening on: https://localhost:5001
+2021-02-03 10:09:45.799 +08:00 [INF] Now listening on: http://localhost:5000
+2021-02-03 10:09:45.800 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2021-02-03 10:09:45.800 +08:00 [INF] Hosting environment: Development
+2021-02-03 10:09:45.800 +08:00 [INF] Content root path: /Users/echochiang/Code/Ecdmin/Ecdmin.Web.Entry
+2021-02-03 10:09:55.095 +08:00 [INF] HTTP GET /index.html responded 200 in 120.9487 ms
+2021-02-03 10:09:55.225 +08:00 [INF] HTTP GET /favicon-32x32.png responded 200 in 6.5036 ms
+2021-02-03 10:09:55.321 +08:00 [INF] HTTP GET /swagger/Default/swagger.json responded 200 in 125.2803 ms
+2021-02-03 10:10:20.361 +08:00 [INF] Application is shutting down...
+2021-02-03 10:10:24.894 +08:00 [INF] Now listening on: https://localhost:5001
+2021-02-03 10:10:24.931 +08:00 [INF] Now listening on: http://localhost:5000
+2021-02-03 10:10:24.931 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2021-02-03 10:10:24.931 +08:00 [INF] Hosting environment: Development
+2021-02-03 10:10:24.931 +08:00 [INF] Content root path: /Users/echochiang/Code/Ecdmin/Ecdmin.Web.Entry
+2021-02-03 10:13:34.482 +08:00 [INF] Application is shutting down...
+2021-02-03 10:13:38.957 +08:00 [INF] Now listening on: https://localhost:5001
+2021-02-03 10:13:38.990 +08:00 [INF] Now listening on: http://localhost:5000
+2021-02-03 10:13:38.990 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2021-02-03 10:13:38.991 +08:00 [INF] Hosting environment: Development
+2021-02-03 10:13:38.991 +08:00 [INF] Content root path: /Users/echochiang/Code/Ecdmin/Ecdmin.Web.Entry
+2021-02-03 10:13:41.370 +08:00 [INF] HTTP GET /index.html responded 200 in 124.7579 ms
+2021-02-03 10:13:41.650 +08:00 [INF] HTTP GET /favicon-32x32.png responded 200 in 5.9191 ms
+2021-02-03 10:13:41.741 +08:00 [INF] HTTP GET /swagger/Default/swagger.json responded 200 in 118.9990 ms
+2021-02-03 10:14:02.178 +08:00 [INF] HTTP OPTIONS /api/administrator?page=1&page_size=15 responded 204 in 2.7448 ms
+2021-02-03 10:14:02.899 +08:00 [WRN] Entity 'Administrator' has a global query filter defined and is the required end of a relationship with the entity 'AdministratorRole'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+2021-02-03 10:14:02.904 +08:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2021-02-03 10:14:03.033 +08:00 [INF] Entity Framework Core 5.0.1 initialized 'SqlServerDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer' with options: SensitiveDataLoggingEnabled DetailedErrorsEnabled MaxPoolSize=100 MigrationsAssembly=Ecdmin.Database.Migrations 
+2021-02-03 10:14:03.481 +08:00 [INF] Executed DbCommand (32ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [admin_user] AS [a]
+WHERE [a].[IsDeleted] <> CAST(1 AS bit)
+2021-02-03 10:14:03.559 +08:00 [INF] Executed DbCommand (21ms) [Parameters=[@__p_0='0', @__p_1='15'], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[Avatar], [a].[CreatedTime], [a].[IsDeleted], [a].[Name], [a].[Password], [a].[UpdatedTime], [a].[Username]
+FROM [admin_user] AS [a]
+WHERE [a].[IsDeleted] <> CAST(1 AS bit)
+ORDER BY [a].[Id] DESC
+OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+2021-02-03 10:14:03.661 +08:00 [INF] HTTP GET /api/administrator?page=1&page_size=15 responded 200 in 1482.0136 ms
+2021-02-03 10:16:13.449 +08:00 [INF] Application is shutting down...

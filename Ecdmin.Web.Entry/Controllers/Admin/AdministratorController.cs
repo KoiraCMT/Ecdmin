@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Ecdmin.Application;
@@ -23,7 +24,7 @@ namespace Ecdmin.Web.Entry.Controllers.Admin
             _administratorService = administratorService;
         }
 
-        [SecurityDefine(PermissionConst.AdminUser.INDEX)]
+        [SecurityDefine(PermissionConst.Administrator.INDEX)]
         public async Task<IActionResult> GetList([FromQuery] AdministratorRequest.Get getParams)
         {
             var list = await _administratorService.GetList(getParams);
@@ -32,7 +33,7 @@ namespace Ecdmin.Web.Entry.Controllers.Admin
             return Response.Pagination(list.Items.Select(t => t.Adapt<AdministratorDto.List>()), getParams);
         }
 
-        [SecurityDefine(PermissionConst.AdminUser.ADD)]
+        [SecurityDefine(PermissionConst.Administrator.ADD)]
         public async Task<IActionResult> Add(AdministratorRequest.AddInput addInput)
         {
             var adminUser = addInput.Adapt<Administrator>();
@@ -45,17 +46,24 @@ namespace Ecdmin.Web.Entry.Controllers.Admin
             return Response.Success();
         }
 
-        [SecurityDefine(PermissionConst.AdminUser.UPDATE)]
-        public async Task<IActionResult> Update(int id, AdministratorRequest.EditInput editInput)
+        [SecurityDefine(PermissionConst.Administrator.UPDATE)]
+        public async Task<IActionResult> Update(int id, AdministratorRequest.EditInput input)
         {
-            await _administratorService.Update(id, editInput);
+            await _administratorService.Update(id, input);
             return Response.Success();
         }
 
-        [SecurityDefine(PermissionConst.AdminUser.DELETE)]
+        [SecurityDefine(PermissionConst.Administrator.DELETE)]
         public async Task<IActionResult> Delete(int id)
         {
             await _administratorService.Delete(id);
+            return Response.Success();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AssignRole(int id, AdministratorRequest.AssignRole input)
+        {
+            await _administratorService.AssignRole(id, input);
             return Response.Success();
         }
     }
