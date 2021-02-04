@@ -88,6 +88,19 @@ namespace Ecdmin.Application.Admin.Services
             });
         }
 
+        public List<string> GetPermissionsByRoleIds(IEnumerable<int> roleIds)
+        {
+            var filteredPermissions = new HashSet<string>();
+
+            foreach (var roleId in roleIds)
+            {
+                var permissions = GetPermissionsByRoleId(roleId).Result;
+                filteredPermissions.UnionWith(permissions);
+            }
+
+            return filteredPermissions.ToList();
+        }
+
         public async Task AssignPermission(int id, RoleRequest.AssignPermissionInput input)
         {
             var role = await _repository.Include(t => t.RolePermissions).FirstOrDefaultAsync(t => t.Id == id);

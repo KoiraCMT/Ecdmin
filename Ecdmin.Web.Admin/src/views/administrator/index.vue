@@ -135,7 +135,7 @@ import {
   responseDataFormat,
   simpleUpdate,
   simpleAdd,
-  simpleDelete
+  simpleDelete, simpleList
 } from '@/utils/viewIndexHanlder'
 import { list, add, update, destroy, assignRole } from '@/api/administrator'
 import { roles } from '@/api/selector'
@@ -188,10 +188,7 @@ export default {
   },
   methods: {
     getList() {
-      this.loading = true
-      list({ ...this.queryParams, page: this.queryPage, page_size: this.pagination.pageSize }).then(resp => {
-        responseDataFormat(resp, this)
-      })
+      simpleList(this, list)
     },
     handleAdd() {
       simpleAdd(this, add)

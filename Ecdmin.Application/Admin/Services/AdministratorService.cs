@@ -42,12 +42,12 @@ namespace Ecdmin.Application.Admin.Services
 
         public async Task<string> Login(string username, string password)
         {
-            var Administrator = await _administratorRepository.Where(t => t.Username == username).FirstOrDefaultAsync();
+            var administrator = await _administratorRepository.Where(t => t.Username == username).FirstOrDefaultAsync();
 
-            if (Administrator == null || !PasswordUtil.VerifyHashedPassword(Administrator, Administrator.Password, password))
+            if (administrator == null || !PasswordUtil.VerifyHashedPassword(administrator, administrator.Password, password))
                 throw Oops.Oh("用户名或密码错误").StatusCode(400);
             
-            var token = JwtUtil.Generate(Administrator.Id.ToString(), Administrator.Username);
+            var token = JwtUtil.Generate(administrator.Id.ToString(), administrator.Username);
             _httpContextAccessor.SigninToSwagger(token);
             return token;
         }
@@ -55,6 +55,11 @@ namespace Ecdmin.Application.Admin.Services
         public async Task<Administrator> Find(int id)
         {
             return await _administratorRepository.FindOrDefaultAsync(id);
+        }
+
+        public async Task<Administrator> FindWithRoleIds(int id)
+        {
+            return await _administratorRepository.Include(t => t.AdministratorRoles).FirstOrDefaultAsync(t => t.Id == id);
         }
 
         public async Task<PagedList<Administrator>> GetList(AdministratorRequest.Get getParams)

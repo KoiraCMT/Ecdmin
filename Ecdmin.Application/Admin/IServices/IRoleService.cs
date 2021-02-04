@@ -23,5 +23,9 @@ namespace Ecdmin.Application.Admin.IServices
         Task AssignPermission(int id, RoleRequest.AssignPermissionInput input);
 
         Task<List<Role>> All();
+
+        Task<List<string>> GetPermissionsByRoleId(int roleId);
+
+        List<string> GetPermissionsByRoleIds(IEnumerable<int> roleIds);
     }
 }

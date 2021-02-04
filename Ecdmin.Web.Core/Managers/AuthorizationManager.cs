@@ -1,24 +1,31 @@
+using System.Linq;
 using System.Security.Claims;
+using Ecdmin.Application.Admin.IServices;
 using Ecdmin.Application.Utils;
 using Ecdmin.Core.Entities.Admin;
 using Furion.DatabaseAccessor;
 using Furion.DependencyInjection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using StackExchange.Profiling.Internal;
 
 namespace Ecdmin.Web.Core.Managers
 {
     public class AuthorizationManager : IAuthorizationManager, ITransient
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IRepository<Administrator> _administratorRepository;
+        private readonly IAdministratorService _administratorService;
+        private readonly IRoleService _roleService;
         private readonly ILogger<AuthorizationManager> _logger;
 
-        public AuthorizationManager(IHttpContextAccessor httpContextAccessor
-            , IRepository<Administrator> administratorRepository, ILogger<AuthorizationManager> logger)
+        public AuthorizationManager(IHttpContextAccessor httpContextAccessor,
+            IAdministratorService administratorService,
+            IRoleService roleService,
+            ILogger<AuthorizationManager> logger)
         {
             _httpContextAccessor = httpContextAccessor;
-            _administratorRepository = administratorRepository;
+            _administratorService = administratorService;
+            _roleService = roleService;
             _logger = logger;
         }
         
@@ -31,7 +38,18 @@ namespace Ecdmin.Web.Core.Managers
         {
             var userId = GetUserId();
 
-            return true;
+            //超管
+            if (userId == 1) return true;
+
+            var administrator = _administratorService.FindWithRoleIds(userId).Result;
+
+            if (administrator == null) return false;
+
+            var roleIds = administrator.AdministratorRoles.Select(t => t.RoleId).ToList();
+
+            var permissions = _roleService.GetPermissionsByRoleIds(roleIds);
+
+            return permissions.Contains(resourceId);
         }
     }
 }

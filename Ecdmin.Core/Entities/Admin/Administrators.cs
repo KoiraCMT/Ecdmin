@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 using Furion.DatabaseAccessor;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +23,7 @@ namespace Ecdmin.Core.Entities.Admin
         public string Name { get; set; }
         
         [MaxLength(100), Required]
-        [JsonIgnore] 
+        [System.Text.Json.Serialization.JsonIgnore]
         public string Password { get; set; }
         
         public string Avatar { get; set; }

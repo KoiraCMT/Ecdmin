@@ -15,8 +15,8 @@ namespace Ecdmin.Application.Admin.IServices
         Task<string> Login(string username, string password);
 
         Task<Administrator> Find(int id);
+        Task<Administrator> FindWithRoleIds(int id);
 
-        // Task<> Get(PageRequest pageRequest);
         Task<PagedList<Administrator>> GetList(AdministratorRequest.Get getParams);
         
         Task<EntityEntry<Administrator>> Update(int id, AdministratorRequest.EditInput editInput);

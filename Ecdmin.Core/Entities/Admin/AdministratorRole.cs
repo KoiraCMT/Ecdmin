@@ -11,6 +11,7 @@ namespace Ecdmin.Core.Entities.Admin
 
         public int RoleId { get; set; }
 
+
         public virtual Administrator Administrator { get; set; }
 
         public virtual Role Role { get; set; }
