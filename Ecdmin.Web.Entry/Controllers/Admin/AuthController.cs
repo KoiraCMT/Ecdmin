@@ -41,6 +41,12 @@ namespace Ecdmin.Web.Entry.Controllers.Admin
             return Response.Data(adminUser.Adapt<AuthInfoDto>());
         }
 
+        [HttpGet]
+        public IActionResult Permissions([FromServices] IAuthorizationManager authorizationManager)
+        {
+            return Response.Data(authorizationManager.GetPermissions());
+        }
+
         [HttpPost]
         public IActionResult Logout()
         {

@@ -4,7 +4,7 @@
     <el-row v-loading="loading" class="mt-10">
       <el-row v-for="item in tableData" :key="item.id" type="flex" class="ai-c">
         <el-col :span="16">
-          <el-link @click="handleNameClick(item.id)">{{ item.name }}</el-link>
+          <el-link @click="handleDisplayNameClick(item)">{{ item.display_name }}</el-link>
         </el-col>
         <el-col :span="8">
           <el-button type="text" :size="buttonSize" @click="handleEdit(item)">修改</el-button>
@@ -21,8 +21,11 @@
     </el-row>
     <el-dialog title="新增" :visible.sync="dialogAddFormVisible" width="40%">
       <el-form ref="addForm" :model="addForm" :rules="addRules" :size="formSize">
-        <el-form-item label="权限组名" prop="name" :label-width="formLabelWidth">
+        <el-form-item label="权限组" prop="name" :label-width="formLabelWidth">
           <el-input v-model="addForm.name" />
+        </el-form-item>
+        <el-form-item label="权限组名" prop="display_name" :label-width="formLabelWidth">
+          <el-input v-model="addForm.display_name" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -34,6 +37,9 @@
       <el-form ref="editForm" :model="editForm" :rules="editRules" :size="formSize">
         <el-form-item label="名称" prop="name" :label-width="formLabelWidth">
           <el-input v-model="editForm.name" />
+        </el-form-item>
+        <el-form-item label="权限组名" prop="display_name" :label-width="formLabelWidth">
+          <el-input v-model="editForm.display_name" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -47,6 +53,7 @@
 import { queryParams } from '@/mixins/queryParams'
 import { responseDataFormat, simpleAdd, simpleDelete, simpleUpdate } from '@/utils/viewIndexHanlder'
 import { list, add, update, destroy } from '@/api/permissionGroup'
+import { requiredAndBetween } from '@/utils/rules'
 import { head } from 'lodash'
 
 export default {
@@ -55,29 +62,27 @@ export default {
   data() {
     return {
       addForm: {
-        name: ''
+        name: '',
+        display_name: ''
       },
       addRules: {
-        name: [
-          { required: true },
-          { min: 3, max: 20 }
-        ]
+        name: requiredAndBetween(2, 20),
+        display_name: requiredAndBetween(2, 20)
       },
       editForm: {
-        name: ''
+        name: '',
+        display_name: ''
       },
       editRules: {
-        name: [
-          { required: true },
-          { min: 3, max: 20 }
-        ]
+        name: requiredAndBetween(2, 20),
+        display_name: requiredAndBetween(2, 20)
       }
     }
   },
   watch: {
     tableData(val) {
       if (val.length > 0) {
-        this.handleNameClick(head(val).id)
+        this.handleDisplayNameClick(head(val))
       }
     }
   },
@@ -89,7 +94,7 @@ export default {
       simpleAdd(this, add)
     },
     handleEdit(group) {
-      this.editForm.name = group.name
+      this.editForm = { name: group.name, display_name: group.display_name }
       this.nowRowData.row = group
       this.dialogEditFormVisible = true
     },
@@ -102,11 +107,12 @@ export default {
         responseDataFormat(resp, this)
       })
     },
-    handleNameClick(id) {
-      this.$emit('get-id', id)
+    handleDisplayNameClick(item) {
+      this.$emit('get-id', item.id)
+      this.$emit('get-name', item.name)
     },
     handleDelete(id) {
-      simpleDelete(this, destroy(id))
+      simpleDelete(this, destroy, id)
     }
   }
 }

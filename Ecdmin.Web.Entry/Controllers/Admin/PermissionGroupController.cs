@@ -35,11 +35,7 @@ namespace Ecdmin.Web.Entry.Controllers.Admin
         {
             var list = await _service.Get(query);
             query.Total = list.TotalCount;
-            return Response.Pagination(list.Items.Select(t => new
-            {
-                t.Id,
-                t.Name
-            }), query);
+            return Response.Pagination(list.Items, query);
         }
 
         [SecurityDefine(PermissionConst.Permission.UPDATE)]

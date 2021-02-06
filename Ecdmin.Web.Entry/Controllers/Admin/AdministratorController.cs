@@ -60,7 +60,7 @@ namespace Ecdmin.Web.Entry.Controllers.Admin
             return Response.Success();
         }
 
-        [HttpPost]
+        [HttpPost, SecurityDefine(PermissionConst.Administrator.ASSIGN_ROLE)]
         public async Task<IActionResult> AssignRole(int id, AdministratorRequest.AssignRole input)
         {
             await _administratorService.AssignRole(id, input);

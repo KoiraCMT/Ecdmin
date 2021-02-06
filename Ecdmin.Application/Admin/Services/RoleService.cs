@@ -13,21 +13,24 @@ using Furion.LinqBuilder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 
 namespace Ecdmin.Application.Admin.Services
 {
-    public class RoleService : IRoleService,ITransient 
+    public class RoleService : IRoleService, ITransient
     {
         private readonly IRepository<Role> _repository;
         private readonly IRepository<RolePermission> _rolePermissionRepository;
         private readonly IMemoryCache _memoryCache;
+        private readonly ILogger<RoleService> _logger;
         private const string ROLE_WITH_PERMISSION_CACHE = "rwp";
 
-        public RoleService(IRepository<Role> repository, IRepository<RolePermission> rolePermissionRepository, IMemoryCache memoryCache)
+        public RoleService(IRepository<Role> repository, IRepository<RolePermission> rolePermissionRepository, IMemoryCache memoryCache, ILogger<RoleService> logger)
         {
             _repository = repository;
             _rolePermissionRepository = rolePermissionRepository;
             _memoryCache = memoryCache;
+            _logger = logger;
         }
 
         public async Task<PagedList<Role>> Get(RoleRequest.Get query)

@@ -47,8 +47,15 @@
     />
     <el-dialog title="新增" :visible.sync="dialogAddFormVisible" width="40%">
       <el-form ref="addForm" :model="addForm" :rules="addRules" :size="formSize">
+        <el-form-item :label-width="formLabelWidth">
+          <el-radio-group v-model="defaultPermission" @change="setPermission">
+            <el-radio-button v-for="item in defaultPermissions" :key="item.value" :label="item.value">{{ item.label }}</el-radio-button>
+          </el-radio-group>
+        </el-form-item>
         <el-form-item label="权限" prop="name" :label-width="formLabelWidth">
-          <el-input v-model="addForm.name" />
+          <el-input v-model="addForm.name">
+            <template slot="prepend">{{ permissionGroupName }}.</template>
+          </el-input>
         </el-form-item>
         <el-form-item label="权限名" prop="display_name" :label-width="formLabelWidth">
           <el-input v-model="addForm.display_name" />
@@ -89,10 +96,21 @@ export default {
     permissionGroupId: {
       type: Number,
       required: true
+    },
+    permissionGroupName: {
+      type: String,
+      required: true
     }
   },
   data() {
     return {
+      defaultPermission: null,
+      defaultPermissions: [
+        { label: '首页', value: 'index' },
+        { label: '新增', value: 'add' },
+        { label: '修改', value: 'update' },
+        { label: '删除', value: 'delete' }
+      ],
       addForm: {
         name: '',
         display_name: ''
@@ -121,6 +139,8 @@ export default {
   },
   watch: {
     permissionGroupId() {
+      this.defaultPermission = 'index'
+      this.addForm = { name: '', display_name: '' }
       this.getList()
     }
   },
@@ -133,6 +153,7 @@ export default {
     },
     handleAdd() {
       this.addForm['group_id'] = this.permissionGroupId
+      this.addForm['name'] = `${this.permissionGroupName}.${this.addForm['name']}`
       simpleAdd(this, add)
     },
     handleEdit(index, row) {
@@ -144,7 +165,11 @@ export default {
       simpleUpdate(this, update)
     },
     handleDelete(id) {
-      simpleDelete(this, destroy(id))
+      simpleDelete(this, destroy, id)
+    },
+    setPermission(item) {
+      const checked = this.defaultPermissions.find(t => t.value === item)
+      this.addForm = { name: checked.value, display_name: checked.label }
     }
   }
 }

@@ -132,7 +132,6 @@
 <script>
 import { queryParams } from '@/mixins/queryParams'
 import {
-  responseDataFormat,
   simpleUpdate,
   simpleAdd,
   simpleDelete, simpleList

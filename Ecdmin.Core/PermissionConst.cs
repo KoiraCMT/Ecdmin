@@ -9,6 +9,7 @@ namespace Ecdmin.Core
             public const string ADD = "administrator.add";
             public const string UPDATE = "administrator.update";
             public const string DELETE = "administrator.delete";
+            public const string ASSIGN_ROLE = "administrator.assignRole";
         }
 
         // permission node
